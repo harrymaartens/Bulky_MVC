@@ -2,6 +2,7 @@ using BulkyBook.DataAcces.Data;
 using BulkyBook.DataAccess.Repository;
 using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Je moet elke service registreren in de DI container anders krijg je InvalidOperationException
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Add globalization
+var cultureInfo = new CultureInfo("nl-NL");
+cultureInfo.NumberFormat.CurrencySymbol = "€";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+CultureInfo.CurrentCulture = cultureInfo;
 
 var app = builder.Build();
 
@@ -33,5 +41,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
+app.UseRequestLocalization("nl-NL");
 
 app.Run();

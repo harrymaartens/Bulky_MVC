@@ -1,10 +1,11 @@
 ﻿using BulkyBook.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook.DataAcces.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         // Registreer ApplicationDbContext in Program.cs Line 8
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

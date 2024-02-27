@@ -3,6 +3,7 @@ using BulkyBook.DataAccess.Repository;
 using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +12,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
 // Je moet elke service registreren in de DI container anders krijg je InvalidOperationException
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add globalization
 var cultureInfo = new CultureInfo("nl-NL");
-cultureInfo.NumberFormat.CurrencySymbol = "€";
+cultureInfo.NumberFormat.CurrencySymbol = "ï¿½";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 CultureInfo.CurrentCulture = cultureInfo;

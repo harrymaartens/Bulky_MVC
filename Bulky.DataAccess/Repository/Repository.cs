@@ -49,9 +49,13 @@ namespace BulkyBook.DataAccess.Repository
 
         // Category, CoverType. Let op Category moet exact gespeld zijn als in _db.Products.Include(u => u.Category).....
         // Als er meer dan 1 propeties zijn dan kunnen de properties worden toegevoegd aan een comma seperated list.
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties
